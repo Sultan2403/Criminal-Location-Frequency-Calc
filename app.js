@@ -22,11 +22,15 @@ function createNewLocation() {
 
     if (newLocation.trim().length < 3) {
         display.textContent = `⚠️ Please enter a valid location of a minimum of three characters!`;
+        setTimeout(() => {
+            display.textContent = ''
+        }, 2500);
         return;
     } else {
         criminalLocations.push(newLocation);
         analyzeCriminalLocations()
     }
+
 
     console.log(criminalLocations);
 }
@@ -58,14 +62,19 @@ function analyzeCriminalLocations() {
         }
     }
 
+    let sortedCriminalLocationsFrequency = Object.values(criminalLocationsFrequency).sort((a, b) => b.count - a.count)
+
     // To output to the display 
 
     display.innerHTML = "<p>The criminal has been to the following places</p>"
-    for (let currentitemkey in criminalLocationsFrequency) {
-        let currentKey = criminalLocationsFrequency[currentitemkey]
+    for (let i = 0; i < sortedCriminalLocationsFrequency.length; i++) {
+        let currentKey = sortedCriminalLocationsFrequency[i]
         const locationDisplay = document.createElement("p")
-        locationDisplay.textContent = `${currentKey.name_of_place}: ${currentKey.count} time(s)`
-        display.appendChild(locationDisplay)
+
+        // Converts first letter to Uppercase...
+
+        locationDisplay.textContent = `${currentKey.name_of_place.charAt(0).toUpperCase() + currentKey.name_of_place.slice(1)}: ${currentKey.count} time(s)`
+        display.appendChild(locationDisplay)  //Tells JS to add as a child to the parent specified in the parantheses 
     }
 
     // Just for logging so I know what I'm doing :) 
